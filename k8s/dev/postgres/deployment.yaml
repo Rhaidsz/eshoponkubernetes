@@ -16,8 +16,10 @@ spec:
       containers:
       - name: postgres
         image: ankane/pgvector:latest
+
         ports:
         - containerPort: 5432
+
         env:
         - name: POSTGRES_USER
           valueFrom:
@@ -36,3 +38,12 @@ spec:
             secretKeyRef:
               name: postgres-secret
               key: POSTGRES_DB
+
+        volumeMounts:
+        - name: initdb
+          mountPath: /docker-entrypoint-initdb.d
+
+      volumes:
+      - name: initdb
+        configMap:
+          name: postgres-initdb

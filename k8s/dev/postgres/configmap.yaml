@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-initdb
+  namespace: dev
+data:
+  init.sql: |
+    CREATE DATABASE identitydb;
+    CREATE DATABASE orderingdb;
+    CREATE DATABASE webhooksdb;
