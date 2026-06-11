@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhooks-api
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webhooks-api
+  template:
+    metadata:
+      labels:
+        app: webhooks-api
+    spec:
+      containers:
+      - name: webhooks-api
+        image: kamilburuk/eshop-webhooks-api:v1
+        imagePullPolicy: Always
+
+        env:
+        - name: ConnectionStrings__webhooksdb
+          value: Host=postgres;Port=5432;Database=webhooksdb;Username=eshop;Password=eshop123
+
+        - name: ConnectionStrings__eventbus
+          value: amqp://guest:guest@rabbitmq:5672
+
+        ports:
+        - containerPort: 8080
