@@ -1,4 +1,4 @@
-pm_api_url = "https://51.158.200.194:8006/api2/json"
+pm_api_url = "https://<Proxmox-IP:Port>/api2/json"
 
-pm_api_token_id     = "root@pam!terraform"
+pm_api_token_id     = "<ProxmoxUser>@dev!terraform"
 pm_api_token_secret = "******-****-****-****-************"
