@@ -14,7 +14,7 @@ jobs:
           kubectl rollout restart deployment/basket-api -n prod
           kubectl rollout restart deployment/identity-api -n prod
           kubectl rollout restart deployment/ordering-api -n prod
-          kubectl rollout restart deployment/orderprocessor -n prod
-          kubectl rollout restart deployment/paymentprocessor -n prod
+          kubectl rollout restart deployment/order-processor -n prod
+          kubectl rollout restart deployment/payment-processor -n prod
           kubectl rollout restart deployment/webhooks-api -n prod
           kubectl rollout restart deployment/webapp -n prod
