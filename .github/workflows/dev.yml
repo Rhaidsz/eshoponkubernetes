@@ -1,0 +1,127 @@
+name: Build-Test-Deploy-Dev
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  REGISTRY: docker.io
+  DOCKER_USER: ${{ secrets.DOCKERHUB_USERNAME }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Run Ordering Tests
+        run: dotnet test --project tests/Ordering.UnitTests/Ordering.UnitTests.csproj
+
+      - name: Run Basket Tests
+        run: dotnet test --project tests/Basket.UnitTests/Basket.UnitTests.csproj
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Catalog API
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: src/Catalog.API/Dockerfile
+          push: true
+          tags: kamilburuk/eshop-catalog-api:latest
+
+      - name: Build and Push Basket API
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: src/Basket.API/Dockerfile
+          push: true
+          tags: kamilburuk/eshop-basket-api:latest
+
+      - name: Build and Push Identity API
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: src/Identity.API/Dockerfile
+          push: true
+          tags: kamilburuk/eshop-identity-api:latest
+
+      - name: Build and Push Ordering API
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: src/Ordering.API/Dockerfile
+          push: true
+          tags: kamilburuk/eshop-ordering-api:latest
+
+      - name: Build and Push Order Processor
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: src/OrderProcessor/Dockerfile
+          push: true
+          tags: kamilburuk/eshop-order-processor:latest
+
+      - name: Build and Push Payment Processor
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: src/PaymentProcessor/Dockerfile
+          push: true
+          tags: kamilburuk/eshop-payment-processor:latest
+
+      - name: Build and Push Webhooks API
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: src/Webhooks.API/Dockerfile
+          push: true
+          tags: kamilburuk/eshop-webhooks-api:latest
+
+      - name: Build and Push WebApp
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: src/WebApp/Dockerfile
+          push: true
+          tags: kamilburuk/eshop-webapp:latest
+
+  deploy-dev:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure Kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+
+      - uses: azure/setup-kubectl@v4
+
+      - name: Restart DEV Deployments
+        run: |
+          kubectl rollout restart deployment/catalog-api -n dev
+          kubectl rollout restart deployment/basket-api -n dev
+          kubectl rollout restart deployment/identity-api -n dev
+          kubectl rollout restart deployment/ordering-api -n dev
+          kubectl rollout restart deployment/orderprocessor -n dev
+          kubectl rollout restart deployment/paymentprocessor -n dev
+          kubectl rollout restart deployment/webhooks-api -n dev
+          kubectl rollout restart deployment/webapp -n dev

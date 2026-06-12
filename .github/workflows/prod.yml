@@ -1,0 +1,27 @@
+name: Deploy-Prod
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure Kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+
+      - uses: azure/setup-kubectl@v4
+
+      - name: Restart PROD Deployments
+        run: |
+          kubectl rollout restart deployment/catalog-api -n prod
+          kubectl rollout restart deployment/basket-api -n prod
+          kubectl rollout restart deployment/identity-api -n prod
+          kubectl rollout restart deployment/ordering-api -n prod
+          kubectl rollout restart deployment/orderprocessor -n prod
+          kubectl rollout restart deployment/paymentprocessor -n prod
+          kubectl rollout restart deployment/webhooks-api -n prod
+          kubectl rollout restart deployment/webapp -n prod
