@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  namespace: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: kamilburuk/eshop-webapp:v1
+        imagePullPolicy: Always
+
+        env:
+        - name: ConnectionStrings__EventBus
+          value: amqp://guest:guest@rabbitmq:5672
+
+        - name: IdentityUrl
+          value: http://identity-api
+
+        - name: CallBackUrl
+          value: http://webapp
+
+        ports:
+        - containerPort: 8080
