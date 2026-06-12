@@ -105,16 +105,9 @@ jobs:
 
   deploy-dev:
     needs: build-and-push
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: Configure Kubeconfig
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
-
-      - uses: azure/setup-kubectl@v4
-
       - name: Restart DEV Deployments
         run: |
           kubectl rollout restart deployment/catalog-api -n dev
