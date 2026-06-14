@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: webhooks-api
-        image: kamilburuk/eshop-webhooks-api:v1
+        image: kamilburuk/eshop-webhooks-api:latest
         imagePullPolicy: Always
 
         env:

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: kamilburuk/eshop-webapp:v1
+        image: kamilburuk/eshop-webapp:latest
         imagePullPolicy: Always
 
         env:

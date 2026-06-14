@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: basket-api
-        image: kamilburuk/eshop-basket-api:v1
+        image: kamilburuk/eshop-basket-api:latest
         imagePullPolicy: Always
 
         env:

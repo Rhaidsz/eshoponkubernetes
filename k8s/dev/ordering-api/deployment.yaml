@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: ordering-api
-        image: kamilburuk/eshop-ordering-api:v1
+        image: kamilburuk/eshop-ordering-api:latest
         imagePullPolicy: Always
 
         env:

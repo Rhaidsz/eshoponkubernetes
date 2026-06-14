@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: order-processor
-        image: kamilburuk/eshop-order-processor:v1
+        image: kamilburuk/eshop-order-processor:latest
         imagePullPolicy: Always
 
         env:

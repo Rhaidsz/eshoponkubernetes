@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: catalog-api
-        image: kamilburuk/eshop-catalog-api:v1
+        image: kamilburuk/eshop-catalog-api:latest
         imagePullPolicy: Always
 
         env:

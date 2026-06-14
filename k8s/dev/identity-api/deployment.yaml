@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: identity-api
-        image: kamilburuk/eshop-identity-api:v1
+        image: kamilburuk/eshop-identity-api:latest
         imagePullPolicy: Always
 
         env:
