@@ -12,7 +12,13 @@ spec:
     metadata:
       labels:
         app: webapp
+
     spec:
+      hostAliases: # neu
+      - ip: "10.10.10.10"
+        hostnames:
+        - "identity.eshop.local" # bis hier
+
       containers:
       - name: webapp
         image: kamilburuk/eshop-webapp:latest
@@ -23,10 +29,13 @@ spec:
           value: amqp://guest:guest@rabbitmq:5672
 
         - name: IdentityUrl
-          value: http://identity-api #http://identity.eshop.local  #http://identity-api
+          value: http://identity.eshop.local #http://identity.eshop.local  #http://identity-api
 
         - name: CallBackUrl
           value: http://eshop.local #http://webapp
+
+        - name: ASPNETCORE_ENVIRONMENT # Neu hinzugefügt
+          value: Development
 
         ports:
         - containerPort: 8080

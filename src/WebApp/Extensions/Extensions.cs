@@ -74,7 +74,10 @@ public static class Extensions
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             options.Authority = identityUrl;
 
-	    options.PushedAuthorizationBehavior = PushedAuthorizationBehavior.Disable; // neu hinzugefügt
+	    options.PushedAuthorizationBehavior = PushedAuthorizationBehavior.Disable; // funktioniert
+
+	    options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.SameAsRequest; // Neu wegen Cookieproblem
+	    options.NonceCookie.SecurePolicy = CookieSecurePolicy.SameAsRequest // Neu wegen Cookieproblem
 
             options.SignedOutRedirectUri = callBackUrl;
             options.ClientId = "webapp";
