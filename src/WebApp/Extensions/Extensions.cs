@@ -73,6 +73,9 @@ public static class Extensions
         {
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             options.Authority = identityUrl;
+
+	    options.PushedAuthorizationBehavior = PushedAuthorizationBehavior.Disable; // neu hinzugefügt
+
             options.SignedOutRedirectUri = callBackUrl;
             options.ClientId = "webapp";
             options.ClientSecret = "secret";
