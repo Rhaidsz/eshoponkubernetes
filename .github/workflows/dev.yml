@@ -108,6 +108,12 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: Debug paths
+        run: |
+          pwd
+          ls -la
+          find . -type d | sort
+
       - name: Restart DEV Deployments
         run: |
           kubectl apply -R -f k8s/dev
