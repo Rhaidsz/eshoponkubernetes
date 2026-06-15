@@ -108,15 +108,12 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Debug paths
-        run: |
-          pwd
-          ls -la
-          find . -type d | sort
+      - uses: actions/checkout@v4
 
       - name: Restart DEV Deployments
         run: |
           kubectl apply -R -f k8s/dev
+
           kubectl rollout restart deployment/catalog-api -n dev
           kubectl rollout restart deployment/basket-api -n dev
           kubectl rollout restart deployment/identity-api -n dev
