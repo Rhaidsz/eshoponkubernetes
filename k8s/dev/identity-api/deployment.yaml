@@ -23,6 +23,6 @@ spec:
           value: Host=postgres;Port=5432;Database=identitydb;Username=eshop;Password=eshop123
 
         - name: WebAppClient
-          value: http://eshop.local #http://localhost:8081
+          value: https://dev.eshop.local #http://localhost:8081
         ports:
         - containerPort: 8080

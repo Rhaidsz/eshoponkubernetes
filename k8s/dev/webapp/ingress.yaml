@@ -7,7 +7,7 @@ spec:
   ingressClassName: traefik
 
   rules:
-  - host: eshop.local
+  - host: dev.eshop.local
     http:
       paths:
       - path: /
