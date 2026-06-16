@@ -29,7 +29,7 @@ spec:
           value: amqp://guest:guest@rabbitmq:5672
 
         - name: IdentityUrl
-          value: http://identity.eshop.local #https://identity.eshop.local
+          value: https://identity.eshop.local #http://identity.eshop.local #https://identity.eshop.local
 
         - name: CallBackUrl
           value: https://dev.eshop.local  #http://eshop.local

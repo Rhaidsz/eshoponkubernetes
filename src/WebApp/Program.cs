@@ -1,6 +1,5 @@
 ﻿using eShop.WebApp.Components;
 using eShop.ServiceDefaults;
-using Microsoft.AspNetCore.HttpOverrides; //neu hinzugefügt
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,13 +10,6 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.AddApplicationServices();
 
 var app = builder.Build();
-
-app.UseForwardedHeaders(new ForwardedHeadersOptions // neu
-{
-    ForwardedHeaders =
-        ForwardedHeaders.XForwardedFor |
-        ForwardedHeaders.XForwardedProto
-}); // bis hier 
 
 app.MapDefaultEndpoints();
 
