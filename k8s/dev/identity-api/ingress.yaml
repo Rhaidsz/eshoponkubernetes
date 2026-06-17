@@ -5,6 +5,12 @@ metadata:
   namespace: dev
 spec:
   ingressClassName: traefik
+
+  tls:
+  - hosts:
+    - identity.eshop.local
+    secretName: eshop-tls
+
   rules:
   - host: identity.eshop.local
     http:

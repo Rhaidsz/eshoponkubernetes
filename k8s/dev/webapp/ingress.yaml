@@ -6,6 +6,11 @@ metadata:
 spec:
   ingressClassName: traefik
 
+  tls:
+  - hosts:
+    - dev.eshop.local
+    secretName: eshop-tls
+
   rules:
   - host: dev.eshop.local
     http:
