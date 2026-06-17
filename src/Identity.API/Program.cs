@@ -2,17 +2,6 @@ using Microsoft.AspNetCore.HttpOverrides; //neu
 
 ﻿var builder = WebApplication.CreateBuilder(args);
 
-
-
-app.UseForwardedHeaders(new ForwardedHeadersOptions //neu
-{
-    ForwardedHeaders =
-        ForwardedHeaders.XForwardedFor |
-        ForwardedHeaders.XForwardedProto
-}); // bis hier
-
-
-
 builder.AddServiceDefaults();
 
 builder.Services.AddControllersWithViews();
@@ -54,6 +43,13 @@ builder.Services.AddTransient<ILoginService<ApplicationUser>, EFLoginService>();
 builder.Services.AddTransient<IRedirectService, RedirectService>();
 
 var app = builder.Build();
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions //neu
+{
+    ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor |
+        ForwardedHeaders.XForwardedProto
+}); // bis hier
 
 app.MapDefaultEndpoints();
 
