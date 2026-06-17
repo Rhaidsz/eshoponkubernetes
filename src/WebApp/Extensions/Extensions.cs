@@ -74,6 +74,12 @@ public static class Extensions
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             options.Authority = identityUrl;
 
+	    options.BackchannelHttpHandler = new HttpClientHandler // new
+	    {
+		ServerCertificateCustomValidationCallback =
+		HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+	    }; // bis hier
+
 	    options.PushedAuthorizationBehavior = PushedAuthorizationBehavior.Disable; // funktioniert
 
             options.SignedOutRedirectUri = callBackUrl;
