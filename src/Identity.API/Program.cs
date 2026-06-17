@@ -1,4 +1,17 @@
+using Microsoft.AspNetCore.HttpOverrides; //neu
+
 ﻿var builder = WebApplication.CreateBuilder(args);
+
+
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions //neu
+{
+    ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor |
+        ForwardedHeaders.XForwardedProto
+}); // bis hier
+
+
 
 builder.AddServiceDefaults();
 
