@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Restart PROD Deployments
         run: |
+          kubectl apply -R -f k8s/dev
+
           kubectl rollout restart deployment/catalog-api -n prod
           kubectl rollout restart deployment/basket-api -n prod
           kubectl rollout restart deployment/identity-api -n prod
