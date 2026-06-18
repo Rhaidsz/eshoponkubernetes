@@ -8,11 +8,11 @@ spec:
 
   tls:
   - hosts:
-    - eshop.local
+    - eshop.course-datascientest2026.cloud-ip.cc
     secretName: eshop-tls
 
   rules:
-  - host: eshop.local
+  - host: eshop.course-datascientest2026.cloud-ip.cc
     http:
       paths:
       - path: /

@@ -45,7 +45,7 @@ jobs:
           context: .
           file: src/Catalog.API/Dockerfile
           push: true
-          tags: kamilburuk/eshop-catalog-api:v1
+          tags: kamilburuk/eshop-catalog-api:latest
 
       - name: Build and Push Basket API
         uses: docker/build-push-action@v6
@@ -53,7 +53,7 @@ jobs:
           context: .
           file: src/Basket.API/Dockerfile
           push: true
-          tags: kamilburuk/eshop-basket-api:v1
+          tags: kamilburuk/eshop-basket-api:latest
 
       - name: Build and Push Identity API
         uses: docker/build-push-action@v6
@@ -61,7 +61,7 @@ jobs:
           context: .
           file: src/Identity.API/Dockerfile
           push: true
-          tags: kamilburuk/eshop-identity-api:v1
+          tags: kamilburuk/eshop-identity-api:latest
 
       - name: Build and Push Ordering API
         uses: docker/build-push-action@v6
@@ -69,7 +69,7 @@ jobs:
           context: .
           file: src/Ordering.API/Dockerfile
           push: true
-          tags: kamilburuk/eshop-ordering-api:v1
+          tags: kamilburuk/eshop-ordering-api:latest
 
       - name: Build and Push Order Processor
         uses: docker/build-push-action@v6
@@ -77,7 +77,7 @@ jobs:
           context: .
           file: src/OrderProcessor/Dockerfile
           push: true
-          tags: kamilburuk/eshop-order-processor:v1
+          tags: kamilburuk/eshop-order-processor:latest
 
       - name: Build and Push Payment Processor
         uses: docker/build-push-action@v6
@@ -85,7 +85,7 @@ jobs:
           context: .
           file: src/PaymentProcessor/Dockerfile
           push: true
-          tags: kamilburuk/eshop-payment-processor:v1
+          tags: kamilburuk/eshop-payment-processor:latest
 
       - name: Build and Push Webhooks API
         uses: docker/build-push-action@v6
@@ -93,7 +93,7 @@ jobs:
           context: .
           file: src/Webhooks.API/Dockerfile
           push: true
-          tags: kamilburuk/eshop-webhooks-api:v1
+          tags: kamilburuk/eshop-webhooks-api:latest
 
       - name: Build and Push WebApp
         uses: docker/build-push-action@v6
@@ -101,7 +101,7 @@ jobs:
           context: .
           file: src/WebApp/Dockerfile
           push: true
-          tags: kamilburuk/eshop-webapp:v1
+          tags: kamilburuk/eshop-webapp:latest
 
   deploy-dev:
     needs: build-and-push
