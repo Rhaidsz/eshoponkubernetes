@@ -40,7 +40,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and Push Catalog API
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: src/Catalog.API/Dockerfile
@@ -48,7 +48,7 @@ jobs:
           tags: kamilburuk/eshop-catalog-api:latest
 
       - name: Build and Push Basket API
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: src/Basket.API/Dockerfile
@@ -56,7 +56,7 @@ jobs:
           tags: kamilburuk/eshop-basket-api:latest
 
       - name: Build and Push Identity API
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: src/Identity.API/Dockerfile
@@ -64,7 +64,7 @@ jobs:
           tags: kamilburuk/eshop-identity-api:latest
 
       - name: Build and Push Ordering API
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: src/Ordering.API/Dockerfile
@@ -72,7 +72,7 @@ jobs:
           tags: kamilburuk/eshop-ordering-api:latest
 
       - name: Build and Push Order Processor
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: src/OrderProcessor/Dockerfile
@@ -80,7 +80,7 @@ jobs:
           tags: kamilburuk/eshop-order-processor:latest
 
       - name: Build and Push Payment Processor
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: src/PaymentProcessor/Dockerfile
@@ -88,7 +88,7 @@ jobs:
           tags: kamilburuk/eshop-payment-processor:latest
 
       - name: Build and Push Webhooks API
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: src/Webhooks.API/Dockerfile
@@ -96,7 +96,7 @@ jobs:
           tags: kamilburuk/eshop-webhooks-api:latest
 
       - name: Build and Push WebApp
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: src/WebApp/Dockerfile
