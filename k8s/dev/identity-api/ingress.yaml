@@ -8,11 +8,11 @@ spec:
 
   tls:
   - hosts:
-    - identity.eshop.local
+    - identity-dev.eshop.local
     secretName: eshop-tls
 
   rules:
-  - host: identity.eshop.local
+  - host: identity-dev.eshop.local
     http:
       paths:
       - path: /
