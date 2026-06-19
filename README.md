@@ -1,142 +1,327 @@
-# eShop Reference Application - "AdventureWorks"
+# eShop on Kubernetes – DevOps Engineer Final Project
 
-A reference .NET application implementing an e-commerce website using a services-based architecture using [.NET Aspire](https://learn.microsoft.com/dotnet/aspire/).
+## Overview
 
-![eShop Reference Application architecture diagram](img/eshop_architecture.png)
+This project demonstrates the deployment and operation of a cloud-native microservices application using modern DevOps practices.
 
-![eShop homepage screenshot](img/eshop_homepage.png)
+The application is based on Microsoft's eShop reference application and was used as a platform to implement containerization, Kubernetes orchestration, CI/CD automation, monitoring, security, and environment management.
 
-## Getting Started
+The primary objective of this project was not software development, but the application of DevOps principles in a production-like environment.
 
-This version of eShop is based on .NET 9. 
+---
 
-Previous eShop versions:
-* [.NET 8](https://github.com/dotnet/eShop/tree/release/8.0)
+# Architecture
 
-### Prerequisites
+## High-Level Architecture
 
-- Clone the eShop repository: https://github.com/dotnet/eshop
-- [Install & start Docker Desktop](https://docs.docker.com/engine/install/)
+```text
+Users
+   │
+   ▼
+Traefik Ingress
+   │
+   ▼
+WebApp
+   │
+   ├── Catalog API
+   ├── Basket API
+   ├── Identity API
+   ├── Ordering API
+   └── Webhooks API
 
-#### Windows with Visual Studio
-- Install [Visual Studio 2022 version 17.10 or newer](https://visualstudio.microsoft.com/vs/).
-  - Select the following workloads:
-    - `ASP.NET and web development` workload.
-    - `.NET Aspire SDK` component in `Individual components`.
-    - Optional: `.NET Multi-platform App UI development` to run client apps
+Supporting Services
+   ├── PostgreSQL
+   ├── Redis
+   └── RabbitMQ
 
-Or
-
-- Run the following commands in a Powershell & Terminal running as `Administrator` to automatically configure your environment with the required tools to build and run this application. (Note: A restart is required and included in the script below.)
-
-```powershell
-install-Module -Name Microsoft.WinGet.Configuration -AllowPrerelease -AcceptLicense -Force
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-get-WinGetConfiguration -file .\.configurations\vside.dsc.yaml | Invoke-WinGetConfiguration -AcceptConfigurationAgreements
+Background Services
+   ├── Order Processor
+   └── Payment Processor
 ```
 
-Or
+---
 
-- From Dev Home go to `Machine Configuration -> Clone repositories`. Enter the URL for this repository. In the confirmation screen look for the section `Configuration File Detected` and click `Run File`.
+# Technology Stack
 
-#### Mac, Linux, & Windows without Visual Studio
-- Install the latest [.NET 9 SDK](https://dot.net/download?cid=eshop)
+## Application
 
-Or
+* .NET 10
+* ASP.NET Core
+* Microsoft eShop Reference Application
 
-- Run the following commands in a Powershell & Terminal running as `Administrator` to automatically configuration your environment with the required tools to build and run this application. (Note: A restart is required after running the script below.)
+## Containerization
 
-##### Install Visual Studio Code and related extensions
-```powershell
-install-Module -Name Microsoft.WinGet.Configuration -AllowPrerelease -AcceptLicense  -Force
-$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-get-WinGetConfiguration -file .\.configurations\vscode.dsc.yaml | Invoke-WinGetConfiguration -AcceptConfigurationAgreements
+* Docker
+* Docker Hub
+
+## Orchestration
+
+* Kubernetes (k3s)
+* Traefik Ingress Controller
+
+## CI/CD
+
+* GitHub Actions
+* Self-hosted GitHub Runner
+
+## Infrastructure
+
+The platform is hosted on a Proxmox hypervisor running an Ubuntu Linux virtual machine.
+
+Core infrastructure components:
+
+* Terraform (Infrastructure as Code)
+* Proxmox VE
+* Ubuntu Server
+* k3s Kubernetes Cluster
+* Traefik Ingress Controller
+* Docker Hub Container Registry
+* GitHub Self-Hosted Runner
+* Kubernetes Namespaces (dev, prod, monitoring)
+---
+
+# Project Requirements Covered
+
+| Requirement                | Implemented |
+| -------------------------- | ----------- |
+| Dockerized Application     | ✅           |
+| Dev Environment            | ✅           |
+| Production Environment     | ✅           |
+| Automated CI/CD            | ✅           |
+| Kubernetes Deployment      | ✅           |
+| Infrastructure as Code     | ✅           |
+| Monitoring                 | ✅           |
+| Security Considerations    | ✅           |
+| Disaster Recovery Planning | ✅           |
+| Documentation              | ✅           |
+
+---
+
+# Dockerization
+
+All application services are containerized using Docker.
+
+Docker images are stored in Docker Hub and automatically updated through the CI/CD pipeline.
+
+Examples:
+
+* kamilburuk/eshop-webapp
+* kamilburuk/eshop-catalog-api
+* kamilburuk/eshop-basket-api
+* kamilburuk/eshop-identity-api
+* kamilburuk/eshop-ordering-api
+
+---
+
+# Kubernetes Deployment
+
+The application is deployed on a k3s Kubernetes cluster.
+
+Resources include:
+
+* Deployments
+* Services
+* Secrets
+* ConfigMaps
+* Ingress resources
+
+Namespaces:
+
+```text
+dev
+prod
+monitoring
 ```
 
-> Note: These commands may require `sudo`
+---
 
-- Optional: Install [Visual Studio Code with C# Dev Kit](https://code.visualstudio.com/docs/csharp/get-started)
-- Optional: Install [.NET MAUI Workload](https://learn.microsoft.com/dotnet/maui/get-started/installation?tabs=visual-studio-code)
+# Development Environment
 
-> Note: When running on Mac with Apple Silicon (M series processor), Rosetta 2 for grpc-tools. 
+Development workloads are deployed to the `dev` namespace.
 
-### Running the solution
+Characteristics:
 
-> [!WARNING]
-> Remember to ensure that Docker is started
+* Latest container images
+* Continuous deployment enabled
+* Testing environment for new changes
 
-* (Windows only) Run the application from Visual Studio:
- - Open the `eShop.Web.slnf` file in Visual Studio
- - Ensure that `eShop.AppHost.csproj` is your startup project
- - Hit Ctrl-F5 to launch Aspire
+Example URL:
 
-* Or run the application from your terminal:
-```powershell
-dotnet run --project src/eShop.AppHost/eShop.AppHost.csproj
-```
-then look for lines like this in the console output in order to find the URL to open the Aspire dashboard:
-```sh
-Login to the dashboard at: http://localhost:19888/login?t=uniquelogincodeforyou
+```text
+https://dev.eshop.course-datascientest2026.cloud-ip.cc
 ```
 
-> You may need to install ASP.NET Core HTTPS development certificates first, and then close all browser tabs. Learn more at https://aka.ms/aspnet/https-trust-dev-cert
+---
 
-### Azure Open AI
+# Production Environment
 
-When using Azure OpenAI, inside *eShop.AppHost/appsettings.json*, add the following section:
+Production workloads are deployed to the `prod` namespace.
 
-```json
-  "ConnectionStrings": {
-    "OpenAi": "Endpoint=xxx;Key=xxx;"
-  }
+Characteristics:
+
+* Versioned container images
+* Isolated configuration
+* Separate ingress routes
+* Stable deployment environment
+
+Example URL:
+
+```text
+https://eshop.course-datascientest2026.cloud-ip.cc
 ```
 
-Replace the values with your own. Then, in the eShop.AppHost *Program.cs*, set this value to **true**
+---
 
-```csharp
-bool useOpenAI = false;
+# CI/CD Pipeline
+
+The project uses GitHub Actions for Continuous Integration and Continuous Deployment.
+
+Pipeline workflow:
+
+```text
+Developer Push
+        →
+GitHub Repository
+        →
+GitHub Actions
+        →
+Build & Test
+        →
+Build Docker Images
+        →
+Push Images to Docker Hub
+        →
+Deploy to Kubernetes
 ```
 
-Here's additional guidance on the [.NET Aspire OpenAI component](https://learn.microsoft.com/dotnet/aspire/azureai/azureai-openai-component?tabs=dotnet-cli). 
+A self-hosted GitHub Actions Runner is installed on the deployment VM to execute Kubernetes deployment jobs.
 
-### Use Azure Developer CLI
+---
 
-You can use the [Azure Developer CLI](https://aka.ms/azd) to run this project on Azure with only a few commands. Follow the next instructions:
+## Infrastructure as Code
 
-- Install the latest or update to the latest [Azure Developer CLI (azd)](https://aka.ms/azure-dev/install).
-- Log in `azd` (if you haven't done it before) to your Azure account:
-```sh
-azd auth login
+Infrastructure provisioning is automated using Terraform.
+
+Terraform is used to create and manage the virtual machine environment on the Proxmox platform, while Kubernetes manifests define the application deployment configuration.
+
+Components managed as code:
+
+* Virtual machine provisioning with Terraform
+* Kubernetes Deployments
+* Kubernetes Services
+* Kubernetes Secrets
+* Kubernetes Ingress Resources
+* Monitoring Stack Configuration
+---
+
+## Monitoring
+
+Monitoring is implemented using the **kube-prometheus-stack Helm Chart**, which provides a complete Kubernetes monitoring solution.
+
+Components:
+
+* Prometheus
+* Grafana
+* Node Exporter
+* kube-state-metrics
+* Alertmanager
+
+Capabilities:
+
+* Kubernetes cluster monitoring
+* Pod and node health monitoring
+* Resource utilization metrics
+* Infrastructure observability
+* Grafana dashboards for visualization
+
+---
+
+# Security Considerations
+
+The project incorporates several DevSecOps practices:
+
+### Kubernetes Secrets
+
+Sensitive configuration values are stored using Kubernetes Secrets.
+
+### GitHub Secrets
+
+Docker Hub credentials are stored securely in GitHub Secrets and are not hardcoded in source code.
+
+### HTTPS/TLS
+
+Traefik Ingress is configured to support HTTPS for application endpoints.
+
+### Principle of Separation
+
+Development and Production environments are isolated using separate namespaces and configuration values.
+
+---
+
+# Disaster Recovery
+
+## Source Control
+
+All source code and deployment manifests are stored in GitHub.
+
+## Container Images
+
+All container images are stored in Docker Hub and can be redeployed at any time.
+
+## Infrastructure Recovery
+
+The Kubernetes cluster can be rebuilt using the repository manifests.
+
+## Rollback Strategy
+
+Previous application versions can be restored by redeploying a previously published image tag.
+
+---
+
+# Known Limitations
+
+The application deploys successfully in Kubernetes and all services are reachable.
+
+Authentication currently requires additional application-level troubleshooting due to OpenID Connect configuration behavior behind the reverse proxy. This does not impact the infrastructure, CI/CD, containerization, monitoring, or Kubernetes deployment objectives of the project.
+
+---
+
+# Deployment
+
+## Deploy Development
+
+```bash
+kubectl apply -R -f k8s/dev
 ```
-- Initialize `azd` from the root of the repo.
-```sh
-azd init
+
+## Deploy Production
+
+```bash
+kubectl apply -R -f k8s/prod
 ```
-- During init:
-  - Select `Use code in the current directory`. Azd will automatically detect the .NET Aspire project.
-  - Confirm `.NET (Aspire)` and continue.
-  - Select which services to expose to the Internet (exposing `webapp` is enough to test the sample).
-  - Finalize the initialization by giving a name to your environment.
 
-- Create Azure resources and deploy the sample by running:
-```sh
-azd up
+---
+
+# Monitoring Access
+
+Grafana:
+
+```text
+http://localhost:3000
 ```
-Notes:
-  - The operation takes a few minutes the first time it is ever run for an environment.
-  - At the end of the process, `azd` will display the `url` for the webapp. Follow that link to test the sample.
-  - You can run `azd up` after saving changes to the sample to re-deploy and update the sample.
-  - Report any issues to [azure-dev](https://github.com/Azure/azure-dev/issues) repo.
-  - [FAQ and troubleshoot](https://learn.microsoft.com/azure/developer/azure-developer-cli/troubleshoot?tabs=Browser) for azd.
 
-## Contributing
+Prometheus:
 
-For more information on contributing to this repo, read [the contribution documentation](./CONTRIBUTING.md) and [the Code of Conduct](CODE-OF-CONDUCT.md).
+```text
+http://localhost:9090
+```
 
-### Sample data
+---
 
-The sample catalog data is defined in [catalog.json](https://github.com/dotnet/eShop/blob/main/src/Catalog.API/Setup/catalog.json). Those product names, descriptions, and brand names are fictional and were generated using [GPT-35-Turbo](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/chatgpt), and the corresponding [product images](https://github.com/dotnet/eShop/tree/main/src/Catalog.API/Pics) were generated using [DALL·E 3](https://openai.com/dall-e-3).
+# Author
 
-## eShop on Azure
+Kamil Buruk
 
-For a version of this app configured for deployment on Azure, please view [the eShop on Azure](https://github.com/Azure-Samples/eShopOnAzure) repo.
+DevOps Engineer Final Project
+
+DataScientest 2026
