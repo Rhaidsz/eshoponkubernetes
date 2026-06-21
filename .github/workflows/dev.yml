@@ -27,7 +27,7 @@ jobs:
         run: dotnet test --project tests/Basket.UnitTests/Basket.UnitTests.csproj
 
       - name: Run Trivy Security Scan
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: config
           scan-ref: .
